@@ -142,7 +142,7 @@ void insertChar(LinkedList *list) {
     infoParam.type = CHAR;
     infoParam.data = (void*)value;
 
-    //Enter the data in the list
+    //Insert the data in the list
     Cons(list, infoParam);
 }
 
