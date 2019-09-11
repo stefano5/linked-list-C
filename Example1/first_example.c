@@ -54,7 +54,6 @@ void insertInt(LinkedList *list);
 void insertChar(LinkedList *list);
 int isEquals(basicType param, void* id);
 int modifyPar(basicType *param, void* paramToSearch, char keyToSearch, void *paramToAdd, char keyToAdd);
-
 void simpleReplace(basicType* list, void* newItem);
 
 
@@ -133,7 +132,7 @@ void insertChar(LinkedList *list) {
     basicType infoParam;
 
     //Memory allocation
-    int *value = (int*)malloc(sizeof(int));
+    char *value = (char*)malloc(sizeof(char));
 
     //Creates random data
     *value = 'a' + count;
