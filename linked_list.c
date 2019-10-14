@@ -25,6 +25,12 @@
                                         return;                                 \
                                     }
 
+#define CHECK_IF_IS_EMPTY_int       if (l == NULL) {                            \
+                                        printf(MEX_EMPTY_LIST"\n");             \
+                                        return -1;                              \
+                                    }
+
+
 
 typedef struct {
     void *data;
@@ -216,7 +222,7 @@ void removeGenericElem(LinkedList *l, void* elementToRemove, REMOVE_FUNCTION) {
  *
  * */
 int modifyElement(LinkedList *l, void *paramToSearch, char keyToSerach, void *paramToAdd, char keyToAdd, MODIFY_FUNCTION) {
-    CHECK_IF_IS_EMPTY; 
+    CHECK_IF_IS_EMPTY_int; 
     LinkedList paux = *l;
     while (!emptyList(*l)) {
         if (modifyFunction(Car(*l), paramToSearch, keyToSerach, paramToAdd, keyToAdd)) {
