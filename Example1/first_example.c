@@ -54,6 +54,7 @@ void insertInt(LinkedList *list);
 void insertChar(LinkedList *list);
 int isEquals(basicType param, void* id);
 int modifyPar(basicType *param, void* paramToSearch, char keyToSearch, void *paramToAdd, char keyToAdd);
+
 void simpleReplace(basicType* list, void* newItem);
 
 
@@ -98,11 +99,16 @@ int main(int argc, char **argv) {
 }
 
 /*
- *  The change in this case was a simple increase 
+ *  The change in this case was a simple multiplication
 */
-void simpleReplace(basicType* item, void* multiplier) {
+void simpleReplace(basicType* item, void* multiplierAsPointer) {
+    int *value = ((int*)item->data);
+    int* multiplier  = (int*)multiplierAsPointer;
+
     if (item->type == INT) {
-        *((int*)item->data) *= *(int*)multiplier;
+        (*value) = (*value) * (*multiplier);
+//  otherwise, if you would be more concise:
+//        *((int*)item->data) *= *(int*)multiplierAsPointer;
     }
 }
 
@@ -132,7 +138,7 @@ void insertChar(LinkedList *list) {
     basicType infoParam;
 
     //Memory allocation
-    char *value = (char*)malloc(sizeof(char));
+    int *value = (int*)malloc(sizeof(int));
 
     //Creates random data
     *value = 'a' + count;
@@ -142,7 +148,7 @@ void insertChar(LinkedList *list) {
     infoParam.type = CHAR;
     infoParam.data = (void*)value;
 
-    //Insert the data in the list
+    //Enter the data in the list
     Cons(list, infoParam);
 }
 
