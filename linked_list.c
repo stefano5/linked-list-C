@@ -40,7 +40,7 @@ typedef struct {
 typedef struct nodeList {
     basicType info;
     struct nodeList* next;
-} tipoNodoLista, *LinkedList;
+} *LinkedList;
 
 void makeNullList(LinkedList *lis) {
     *lis = NULL;
