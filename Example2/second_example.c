@@ -85,7 +85,6 @@ int main(int argc, char **argv) {
     exit(EXIT_SUCCESS);
 }
 
-
 /*
  *  This function get the pointer of the item so it can modify that value, TODO
  *
@@ -122,7 +121,6 @@ int replaceFunction(basicType *itemToReplace, void* paramToSearch, char keyToSea
     }
     return FALSE;
 }
-
 
 /*
  *  Compare the i_th item with one parameter 
@@ -202,6 +200,8 @@ void insertComplexType(LinkedList *list) {
     param.type = VOID_GP;    //VOID_G[ENERAL]P[URPOSE]
     param.data = (void*)newParam;
 
+
     //enter the data in the list
     Cons(list, param);
 }
+
