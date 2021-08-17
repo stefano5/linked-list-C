@@ -27,10 +27,10 @@ typedef struct {
 
 //Prototype
 void insertComplexType(LinkedList *list);
-void printComplexType(basicType itemList, void * param);
-void simpleReplace(basicType* list, void* newItem);
-int isEquals(basicType item, void* toSearch);
-int replaceFunction(basicType *itemToReplace, void* paramToSearch, char keyToSearch, void* newItem, char keyToReplace);
+void printComplexType(basic_type_list itemList, void * param);
+void simpleReplace(basic_type_list* list, void* newItem);
+int isEquals(basic_type_list item, void* toSearch);
+int replaceFunction(basic_type_list *itemToReplace, void* paramToSearch, char keyToSearch, void* newItem, char keyToReplace);
 
 //Main
 int main(int argc, char **argv) {
@@ -89,7 +89,7 @@ int main(int argc, char **argv) {
  *  This function get the pointer of the item so it can modify that value, TODO
  *
 */
-int replaceFunction(basicType *itemToReplace, void* paramToSearch, char keyToSearch, void* newItem, char keyToReplace) {
+int replaceFunction(basic_type_list *itemToReplace, void* paramToSearch, char keyToSearch, void* newItem, char keyToReplace) {
     ComplexType *elem       =   itemToReplace->data;
     switch (keyToSearch) {
         case 'A': // we search for int
@@ -126,7 +126,7 @@ int replaceFunction(basicType *itemToReplace, void* paramToSearch, char keyToSea
  *  Compare the i_th item with one parameter 
  *
 */
-int isEquals(basicType item, void* toSearch) {
+int isEquals(basic_type_list item, void* toSearch) {
     ComplexType *elem       =   (ComplexType*)item.data;
     int conditionToClearItem=   *(int*)toSearch;
     return elem->count == conditionToClearItem;
@@ -136,7 +136,7 @@ int isEquals(basicType item, void* toSearch) {
 /*
  * Suppose we would replace one item, where [ComplexType].count is 1
  */
-void simpleReplace(basicType* item, void* newItem) {
+void simpleReplace(basic_type_list* item, void* newItem) {
     ComplexType *elem       =   item->data;
     ComplexType *newElem    =   (ComplexType*)newItem;
 
@@ -163,7 +163,7 @@ void simpleReplace(basicType* item, void* newItem) {
  *
  *   Then:
  */ 
-void printComplexType(basicType itemList, void *genericParam) {
+void printComplexType(basic_type_list itemList, void *genericParam) {
     if ((int)itemList.type == VOID_GP) {
         ComplexType *elem = (ComplexType*)itemList.data;
         printf("#####################################\n");
@@ -181,7 +181,7 @@ void printComplexType(basicType itemList, void *genericParam) {
 
 int count;
 void insertComplexType(LinkedList *list) {
-    basicType param;
+    basic_type_list param;
 
     //Memory  allocation
     ComplexType *newParam = (ComplexType*)malloc(sizeof(ComplexType));

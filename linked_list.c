@@ -4,6 +4,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+
+#ifndef _QUEUE_C
+
 #define CHAR        0
 #define INT         1
 #define FLOAT       2
@@ -14,31 +17,27 @@
 #define TRUE        1
 #define FALSE       0
 
-#define MODIFY_FUNCTION             int(*modifyFunction)    (basicType*, void*, char, void*, char)
-#define REMOVE_FUNCTION             int(*removeFunction)    (basicType, void*)
-#define GET_ELEMENT_LIST_FUNCTION   void(*genericFunction)  (basicType, void*)
-#define GET_POINTER_LIST_FUNCTION   void(*genericFunction)  (basicType*, void*)
+#endif
 
-#define MEX_EMPTY_LIST              "Empty list"
-#define CHECK_IF_IS_EMPTY           if (l == NULL) {                            \
-                                        printf(MEX_EMPTY_LIST"\n");             \
-                                        return;                                 \
-                                    }
+#define MODIFY_FUNCTION_LIST                int(*modifyFunction)    (basic_type_list*, void*, char, void*, char)
+#define REMOVE_FUNCTION_LIST                int(*removeFunction)    (basic_type_list, void*)
+#define GET_ELEMENT_LIST_FUNCTION           void(*genericFunction)  (basic_type_list, void*)
+#define GET_POINTER_LIST_FUNCTION           void(*genericFunction)  (basic_type_list*, void*)
 
-#define CHECK_IF_IS_EMPTY_int       if (l == NULL) {                            \
-                                        printf(MEX_EMPTY_LIST"\n");             \
-                                        return -1;                              \
-                                    }
+#ifndef MEX_EMPTY_LIST
+    #define MEX_EMPTY_LIST              "Empty list\n"
+#endif
 
-
+#define CHECK_IF_IS_EMPTY           if (l == NULL) { printf(MEX_EMPTY_LIST); return; }
+#define CHECK_IF_IS_EMPTY_int       if (l == NULL) { printf(MEX_EMPTY_LIST); return -1; }
 
 typedef struct {
     void *data;
     int type;
-} basicType;
+} basic_type_list;
 
 typedef struct nodeList {
-    basicType info;
+    basic_type_list info;
     struct nodeList* next;
 } *LinkedList;
 
@@ -50,7 +49,7 @@ int emptyList(LinkedList l) {
     return l == NULL;
 }
 
-LinkedList Cons(LinkedList *lis, basicType elem) {
+LinkedList Cons(LinkedList *lis, basic_type_list elem) {
     LinkedList temp;
     temp = (struct nodeList*)malloc(sizeof(struct nodeList));
     if (temp != NULL) {
@@ -77,7 +76,7 @@ int Cdr(LinkedList *lis) {
 /**
  * Cancella elemento in testa dalla lista rimuovendo anche il parametro puntato come 'info', se presente
  *
- * è safety con la struttura 'basicType', testata con valgrind
+ * è safety con la struttura 'basic_type_list', testata con valgrind
  * */
 int Cdr_pointerData(LinkedList *lis) {
     LinkedList temp;
@@ -94,14 +93,14 @@ int Cdr_pointerData(LinkedList *lis) {
  * Ritorna il primo elemento della lista, se esiste
  *
  * */
-basicType* Car(LinkedList l) {
+basic_type_list* Car(LinkedList l) {
     if (!emptyList(l)) return &(l->info);
     return NULL;
 }
 
 int isEmptyList(LinkedList l) {
     if (emptyList(l)) {
-        printf("Empty list\n");
+        printf(MEX_EMPTY_LIST);
         return TRUE;
     } else {
         return FALSE;
@@ -109,10 +108,11 @@ int isEmptyList(LinkedList l) {
 }
 
 /**
- * Stampa una istanza della struttura 'basicType' rendendo trasparente il tipo 
+ * Stampa una istanza della struttura 'basic_type_list' rendendo trasparente il tipo 
+ * Questo se elem.data è un tipo primitivo, altrimenti stampa solo il puntatore
  *
  * */
-void printBasicType(basicType elem) {
+void printBasicType(basic_type_list elem) {
     switch (elem.type) {
         case CHAR:
             printf("%c\n", *((char*)elem.data));
@@ -159,7 +159,7 @@ void deleteList(LinkedList *lis) {
     while (Cdr_pointerData(lis));
 }
 
-int equals(basicType ele1, basicType ele2) {
+int equals(basic_type_list ele1, basic_type_list ele2) {
     if (ele1.type == ele2.type) {
         switch (ele1.type) {
             case CHAR:
@@ -187,7 +187,7 @@ int equals(basicType ele1, basicType ele2) {
  * Tale funzione deve ritornare il valore 'TRUE' se 'elementToRemove' combacia con quello in lista. 
  * Un esempio di tale funzione è:
  *
- *       int isEquals(basicType param, void* identifier) {
+ *       int isEquals(basic_type_list param, void* identifier) {
  *           int id_toRemove = *(int*)identifier;
  *           int id_toSearch = ((Process*)param.data)->id;          //Cast su un generico tipo 'Process'
  *           return id_toRemove == id_toSearch;
@@ -199,7 +199,7 @@ int equals(basicType ele1, basicType ele2) {
  *
  * safety, testata con valgrind
  * */
-void removeGenericElem(LinkedList *l, void* elementToRemove, REMOVE_FUNCTION) {
+void removeGenericElem(LinkedList *l, void* elementToRemove, REMOVE_FUNCTION_LIST) {
     CHECK_IF_IS_EMPTY;                         // ^^ spetta alla funzione 'removeFunction' decidere il suo tipo 
     LinkedList paux;
     if (*l != NULL) {
@@ -221,8 +221,8 @@ void removeGenericElem(LinkedList *l, void* elementToRemove, REMOVE_FUNCTION) {
  * safety, testata con valgrind
  *
  * */
-int modifyElement(LinkedList *l, void *paramToSearch, char keyToSerach, void *paramToAdd, char keyToAdd, MODIFY_FUNCTION) {
-    CHECK_IF_IS_EMPTY_int; 
+int modifyElement(LinkedList *l, void *paramToSearch, char keyToSerach, void *paramToAdd, char keyToAdd, MODIFY_FUNCTION_LIST) {
+    CHECK_IF_IS_EMPTY_int;
     LinkedList paux = *l;
     while (!emptyList(*l)) {
         if (modifyFunction(Car(*l), paramToSearch, keyToSerach, paramToAdd, keyToAdd)) {
@@ -249,7 +249,7 @@ void managementLinkedList(LinkedList l, void *param, GET_ELEMENT_LIST_FUNCTION) 
 }
 
 /**
- * Da' alla funzione 'func' il puntatore all'elemento in testa permettendo la modifica
+ * Da' alla funzione 'genericFunction' il puntatore all'elemento in testa permettendo la modifica
  *
  * get[POINTER]ElementLinkedList
  *

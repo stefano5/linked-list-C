@@ -15,29 +15,29 @@
  * In this example we will see how to create a linked list with a default type (int, char, int and char, and so on...)
  * We will use this function:
  * 
- *  -   LinkedList Cons(LinkedList *lis, basicType elem);
+ *  -   LinkedList Cons(LinkedList *lis, basic_type_list elem);
  *  -   void printList_simply(LinkedList l);
  *          This function print on stdout default type like int, char...
  *  -   void deleteList(LinkedList *lis);
  *          Clear all allocated memory
  *  -   int modifyElement(LinkedList *l, void *paramToSearch, char keyToSerach, void *paramToAdd, char keyToAdd, MODIFY_FUNCTION);
- *          where MODIFY_FUNCTION is:        int(*modifyFunc)(basicType*, void*, char, void*, char));
+ *          where MODIFY_FUNCTION is:        int(*modifyFunc)(basic_type_list*, void*, char, void*, char));
  *          this is a function that:
  *              -   return a int (TRUE or FALSE) 
- *              -   receve, one by one, all itmes in the first parameter (*basicType)
+ *              -   receve, one by one, all itmes in the first parameter (*basic_type_list)
  *              -   wants:      a key (it's up to you to choose it unique) related to the type and the parameter to look for in the list.
  *                              a key always related to the type and the new parameter to be inserted 
  *                       Example, you have in list:     int x   end you want replace it with char x you can associate  key = 'A' for int and key = 'B' for char and so discriminate against them.
  *
  * If you want get one by one the item you can use:
- *  -   void getElementLinkedList(LinkedList *l, void *param, void(*func)(basicType*, void*));
+ *  -   void getElementLinkedList(LinkedList *l, void *param, void(*func)(basic_type_list*, void*));
  *              -   Note, with this function you have all the pointer then you can modify them.
  *
  *
  * How you can see you have to do 3 functions only. Of course, initializing first with the 'LinkedList' type.
  *
  *  1/2) insert function. You have to:
- *      -   Choose your data type, write it in (infoParam.type)     where infoParam is a basicType variable
+ *      -   Choose your data type, write it in (infoParam.type)     where infoParam is a basic_type_list variable
  *      -   Allocate the memory for your value  (you can deallocate it with 'deleteList' function)
  *      -   Insert in list your value with 'Cons' function
  *  
@@ -52,10 +52,10 @@
 */
 void insertInt(LinkedList *list);
 void insertChar(LinkedList *list);
-int isEquals(basicType param, void* id);
-int modifyPar(basicType *param, void* paramToSearch, char keyToSearch, void *paramToAdd, char keyToAdd);
+int isEquals(basic_type_list param, void* id);
+int modifyPar(basic_type_list *param, void* paramToSearch, char keyToSearch, void *paramToAdd, char keyToAdd);
 
-void simpleReplace(basicType* list, void* newItem);
+void simpleReplace(basic_type_list* list, void* newItem);
 
 
 int main(int argc, char **argv) {
@@ -101,7 +101,7 @@ int main(int argc, char **argv) {
 /*
  *  The change in this case was a simple multiplication
 */
-void simpleReplace(basicType* item, void* multiplierAsPointer) {
+void simpleReplace(basic_type_list* item, void* multiplierAsPointer) {
     int *value = ((int*)item->data);
     int* multiplier  = (int*)multiplierAsPointer;
 
@@ -115,7 +115,7 @@ void simpleReplace(basicType* item, void* multiplierAsPointer) {
 int count=0;
 void insertInt(LinkedList *list) {
     //Declaration
-    basicType infoParam;
+    basic_type_list infoParam;
 
     //Memory allocation
     int *value = (int*)malloc(sizeof(int));
@@ -135,7 +135,7 @@ void insertInt(LinkedList *list) {
 
 void insertChar(LinkedList *list) {
     //Declaration
-    basicType infoParam;
+    basic_type_list infoParam;
 
     //Memory allocation
     int *value = (int*)malloc(sizeof(int));
@@ -152,13 +152,13 @@ void insertChar(LinkedList *list) {
     Cons(list, infoParam);
 }
 
-int isEquals(basicType param, void* id) {
+int isEquals(basic_type_list param, void* id) {
     char toRemove = *(char*)id;
     char toSearch = *((char*)param.data);
     return toRemove == toSearch;
 }
 
-int modifyPar(basicType *param, void* paramToSearch, char keyToSearch, void *paramToAdd, char keyToAdd) {
+int modifyPar(basic_type_list *param, void* paramToSearch, char keyToSearch, void *paramToAdd, char keyToAdd) {
     switch (keyToSearch) {
         case 'A':   //This means that 'paramToSearch' is: int
             if (*((int*)param->data) == *(int*)paramToSearch) { //if is equal
